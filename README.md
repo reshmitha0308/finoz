@@ -13,6 +13,7 @@ showing its working at every step.
 
 ```bash
 pip install -r requirements.txt
+cd <File Path>
 python app.py
 ```
 
