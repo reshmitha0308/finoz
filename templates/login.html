@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Log in — FinOz{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h2>WELCOME BACK</h2>
+    <p class="lead">Log in to reach your market dashboard and portfolio.</p>
+
+    <form method="POST" novalidate>
+      <div class="field">
+        <label for="identifier">Username or email</label>
+        <input type="text" id="identifier" name="identifier" required
+               value="{{ form.get('identifier', '') }}" placeholder="peterparker">
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required
+               placeholder="Your password">
+      </div>
+
+      <button type="submit" class="btn btn-red btn-lg" style="width:100%">
+        Log in
+      </button>
+    </form>
+
+    <p class="auth-alt">
+      New here? <a href="{{ url_for('signup_page') }}">Create an account</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

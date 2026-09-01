@@ -1,0 +1,182 @@
+{
+  "RELIANCE": [
+    {
+      "headline": "Reliance Retail posts 18% YoY revenue growth, adds 340 new stores",
+      "score": 0.7
+    },
+    {
+      "headline": "Jio subscriber additions slow for second consecutive quarter",
+      "score": -0.4
+    },
+    {
+      "headline": "Brokerages raise Reliance target price citing new energy capex clarity",
+      "score": 0.6
+    },
+    {
+      "headline": "Crude price volatility may pressure O2C segment margins, analysts warn",
+      "score": -0.3
+    }
+  ],
+  "TCS": [
+    {
+      "headline": "TCS wins multi-year deal with European banking major",
+      "score": 0.8
+    },
+    {
+      "headline": "TCS announces Rs 17,000 crore share buyback at premium",
+      "score": 0.6
+    },
+    {
+      "headline": "IT hiring freeze continues; TCS headcount flat for third quarter",
+      "score": -0.2
+    },
+    {
+      "headline": "Attrition falls to 12.1%, lowest in eight quarters",
+      "score": 0.5
+    }
+  ],
+  "INFY": [
+    {
+      "headline": "Infosys cuts FY26 revenue guidance on weak discretionary spending",
+      "score": -0.8
+    },
+    {
+      "headline": "Large BFSI client scales down engagement, filing shows",
+      "score": -0.7
+    },
+    {
+      "headline": "Infosys expands AI services partnership with cloud hyperscaler",
+      "score": 0.5
+    },
+    {
+      "headline": "Margin pressure persists as pricing renegotiations continue",
+      "score": -0.5
+    }
+  ],
+  "HDFCBANK": [
+    {
+      "headline": "HDFC Bank net interest margin expands to 3.6% post-merger",
+      "score": 0.7
+    },
+    {
+      "headline": "Deposit growth outpaces credit growth for the first time in six quarters",
+      "score": 0.4
+    },
+    {
+      "headline": "Gross NPA ratio steady at 1.24%, asset quality holds",
+      "score": 0.5
+    },
+    {
+      "headline": "RBI flags higher provisioning norms for unsecured retail lending",
+      "score": -0.4
+    }
+  ],
+  "TMPV": [
+    {
+      "headline": "JLR wholesale volumes decline 9% on weak China demand",
+      "score": -0.7
+    },
+    {
+      "headline": "Domestic EV sales cross 25,000 units in the quarter",
+      "score": 0.6
+    },
+    {
+      "headline": "Commercial vehicle segment sees margin compression on input costs",
+      "score": -0.5
+    },
+    {
+      "headline": "Tata Motors completes demerger of passenger and commercial units",
+      "score": 0.2
+    }
+  ],
+  "ITC": [
+    {
+      "headline": "ITC FMCG segment margin expands 90 bps on premiumisation push",
+      "score": 0.6
+    },
+    {
+      "headline": "Cigarette volumes grow 2.4% as tax regime stays stable",
+      "score": 0.4
+    },
+    {
+      "headline": "Hotels demerger completed; separate listing begins trading",
+      "score": 0.3
+    },
+    {
+      "headline": "Agri business revenue falls on export restrictions for wheat",
+      "score": -0.4
+    }
+  ],
+  "BHARTIARTL": [
+    {
+      "headline": "Airtel ARPU rises to Rs 254, highest among Indian operators",
+      "score": 0.8
+    },
+    {
+      "headline": "5G subscriber base crosses 120 million on network expansion",
+      "score": 0.6
+    },
+    {
+      "headline": "Africa operations post 14% constant currency revenue growth",
+      "score": 0.5
+    },
+    {
+      "headline": "Net debt remains elevated after spectrum payment obligations",
+      "score": -0.4
+    }
+  ],
+  "SUNPHARMA": [
+    {
+      "headline": "Specialty portfolio crosses USD 1 billion in annual revenue",
+      "score": 0.7
+    },
+    {
+      "headline": "USFDA issues Form 483 observations at Halol facility",
+      "score": -0.7
+    },
+    {
+      "headline": "US generics pricing erosion continues in mid single digits",
+      "score": -0.5
+    },
+    {
+      "headline": "India formulations business grows 11% ahead of market",
+      "score": 0.5
+    }
+  ],
+  "LT": [
+    {
+      "headline": "L&T order book hits record Rs 5.1 lakh crore on infrastructure wins",
+      "score": 0.8
+    },
+    {
+      "headline": "Middle East orders drive international revenue to 48% of total",
+      "score": 0.5
+    },
+    {
+      "headline": "Execution margin guidance trimmed on international project costs",
+      "score": -0.5
+    },
+    {
+      "headline": "Management reiterates asset-light strategy and higher payout",
+      "score": 0.4
+    }
+  ],
+  "SBIN": [
+    {
+      "headline": "SBI net interest margin holds at 3.28% despite deposit repricing",
+      "score": 0.5
+    },
+    {
+      "headline": "Gross NPA falls to 2.05%, lowest in over a decade",
+      "score": 0.7
+    },
+    {
+      "headline": "Wage revision provisions weigh on quarterly operating profit",
+      "score": -0.5
+    },
+    {
+      "headline": "Credit growth of 14% outpaces the banking system average",
+      "score": 0.6
+    }
+  ]
+}

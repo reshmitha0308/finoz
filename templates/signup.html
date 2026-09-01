@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Sign up — FinOz{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h2>JOIN THE WEB</h2>
+    <p class="lead">
+      Create an account to get virtual capital, a portfolio, and your own
+      team of AI analysts.
+    </p>
+
+    <form method="POST" novalidate>
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required minlength="3"
+               value="{{ form.get('username', '') }}" placeholder="peterparker">
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required
+               value="{{ form.get('email', '') }}" placeholder="you@example.com">
+        <p class="field-hint">We send a 6-digit confirmation code to this address.</p>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required minlength="6"
+               placeholder="At least 6 characters">
+      </div>
+
+      <div class="field">
+        <label for="risk">Risk tolerance</label>
+        <select id="risk" name="risk">
+          <option value="low">Low — I cannot afford to lose capital</option>
+          <option value="medium" selected>Medium — balanced</option>
+          <option value="high">High — I chase returns and accept drawdowns</option>
+        </select>
+        <p class="field-hint">
+          This feeds straight into the AI. The same stock gives different advice
+          to a cautious investor and an aggressive one. You can change it later.
+        </p>
+      </div>
+
+      <button type="submit" class="btn btn-red btn-lg" style="width:100%">
+        Create account
+      </button>
+    </form>
+
+    <p class="auth-alt">
+      Already have an account? <a href="{{ url_for('login_page') }}">Log in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

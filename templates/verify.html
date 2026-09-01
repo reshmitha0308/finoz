@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Verify your email — FinOz{% endblock %}
+
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h2>CHECK YOUR CODE</h2>
+    <p class="lead">
+      Enter the 6-digit confirmation code to activate your account.
+    </p>
+
+    {% if demo_code %}
+      <!-- DEMO ONLY.
+           Real email sending is not switched on yet, so we show the code here
+           and also print it in your terminal. When you enable real email in
+           auth.py, delete this whole block. -->
+      <div class="code-box">
+        <div class="code">{{ demo_code }}</div>
+        <small>Demo mode — this code would normally arrive by email</small>
+      </div>
+    {% endif %}
+
+    <form method="POST" novalidate>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required
+               value="{{ email }}" placeholder="you@example.com">
+      </div>
+
+      <div class="field">
+        <label for="code">Confirmation code</label>
+        <input type="text" id="code" name="code" required
+               inputmode="numeric" maxlength="6" placeholder="000000"
+               style="letter-spacing:8px; text-align:center; font-size:1.3rem">
+      </div>
+
+      <button type="submit" class="btn btn-red btn-lg" style="width:100%">
+        Verify and continue
+      </button>
+    </form>
+
+    <p class="auth-alt">
+      Wrong address? <a href="{{ url_for('signup_page') }}">Sign up again</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

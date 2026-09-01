@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% block title %}FinOz — Your Own Research Team{% endblock %}
+
+{% block content %}
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="sense-ring"></div>
+  <div class="sense-ring"></div>
+  <div class="sense-ring"></div>
+
+  <p class="hero-eyebrow">With great data comes great responsibility</p>
+
+  <img src="{{ url_for('static', filename='img/finoz-logo-hero.png') }}"
+       alt="FinOz" class="hero-logo">
+
+  <h1>SPIDER SENSE FOR MARKETS</h1>
+  <p class="hero-sub">
+    Hedge funds run parallel analyst teams. You get a price chart and a Telegram tip.
+    FinOz gives you three AI analysts that research a stock at the same time,
+    argue it out, and explain every single conclusion.
+  </p>
+
+  <div class="hero-cta">
+    {% if user %}
+      <a href="{{ url_for('dashboard') }}" class="btn btn-red btn-lg">Open the market</a>
+      <a href="{{ url_for('portfolio_page') }}" class="btn btn-ghost btn-lg">My portfolio</a>
+    {% else %}
+      <a href="{{ url_for('signup_page') }}" class="btn btn-red btn-lg">Get started free</a>
+      <a href="{{ url_for('login_page') }}" class="btn btn-ghost btn-lg">I have an account</a>
+    {% endif %}
+  </div>
+
+  <div class="scroll-hint">SCROLL</div>
+</section>
+
+<!-- ============================ PROBLEM ============================ -->
+<section class="section">
+  <div class="stat-strip reveal">
+    <div class="stat">
+      <div class="stat-value">89%</div>
+      <div class="stat-label">OF RETAIL F&amp;O TRADERS LOSE MONEY</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">130M</div>
+      <div class="stat-label">NEW INVESTORS IN 4 YEARS</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">80%</div>
+      <div class="stat-label">OF THEM ARE UNDER 30</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div class="stat-label">AI AGENTS WORKING FOR YOU</div>
+    </div>
+  </div>
+
+  <h2 class="section-title reveal">IT IS NOT A KNOWLEDGE GAP</h2>
+  <p class="section-sub reveal">It is an infrastructure gap. So we built the infrastructure.</p>
+
+  <div class="grid grid-3">
+    <div class="card reveal">
+      <span class="card-icon">&#128200;</span>
+      <h3>THE TECHNICAL ANALYST</h3>
+      <p>Reads price momentum and volume anomalies against 20-period averages.
+         Never guesses about news — it only knows what the chart shows.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">&#128196;</span>
+      <h3>THE FUNDAMENTAL ANALYST</h3>
+      <p>Searches a corpus of SEBI filings and earnings transcripts, then grounds
+         every claim in a document you can open and read yourself.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">&#128240;</span>
+      <h3>THE SENTIMENT ANALYST</h3>
+      <p>Scores the mood of recent news coverage. If the feed goes down it says so
+         instead of inventing headlines.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HOW IT WORKS ============================ -->
+<section class="section">
+  <h2 class="section-title reveal">HOW THE WEB IS SPUN</h2>
+  <p class="section-sub reveal">From raw market data to a decision you can defend, in seconds.</p>
+
+  <div class="grid grid-4">
+    <div class="card reveal">
+      <div class="step-number">01</div>
+      <h3>INGEST</h3>
+      <p>Live NSE and BSE prices stream in, alongside filings and headlines.</p>
+    </div>
+    <div class="card reveal">
+      <div class="step-number">02</div>
+      <h3>ANALYSE</h3>
+      <p>Three specialists run <strong>at the same time</strong>, not one after another.</p>
+    </div>
+    <div class="card reveal">
+      <div class="step-number">03</div>
+      <h3>SYNTHESISE</h3>
+      <p>A fourth agent resolves their disagreements against <em>your</em> risk profile.</p>
+    </div>
+    <div class="card reveal">
+      <div class="step-number">04</div>
+      <h3>DECIDE</h3>
+      <p>You follow the AI or ignore it. Either way, we track whether it was right.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DIFFERENTIATOR ============================ -->
+<section class="section">
+  <div class="grid grid-2">
+    <div class="card reveal">
+      <span class="card-icon">&#127919;</span>
+      <h3>IT SHOWS ITS WORKING</h3>
+      <p>Every recommendation opens up. See each agent's confidence, the evidence it
+         used, the exact filings retrieved, and how disagreements were resolved.
+         No black box.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">&#129504;</span>
+      <h3>IT KNOWS WHO YOU ARE</h3>
+      <p>A cautious first-timer and an aggressive trader get different answers from
+         identical market data, because your risk profile is fed straight into the
+         synthesis step.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">&#128202;</span>
+      <h3>IT KEEPS SCORE</h3>
+      <p>Follow or ignore any call. We measure the AI against what the price actually
+         did afterwards and show you its real hit rate. Accountability, not hype.</p>
+    </div>
+    <div class="card reveal">
+      <span class="card-icon">&#9888;</span>
+      <h3>IT ADMITS WHEN IT IS BLIND</h3>
+      <p>Kill the news feed and the sentiment agent reports UNAVAILABLE, drops out of
+         the vote, and the final confidence falls. It never fills a gap by guessing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CTA ============================ -->
+<section class="section" style="text-align:center">
+  <h2 class="section-title reveal">READY TO SUIT UP?</h2>
+  <p class="section-sub reveal">
+    Free virtual capital. Ten companies on NSE and BSE. Four agents. No black boxes.
+  </p>
+  <div class="reveal">
+    {% if user %}
+      <a href="{{ url_for('dashboard') }}" class="btn btn-red btn-lg">Open the market</a>
+    {% else %}
+      <a href="{{ url_for('signup_page') }}" class="btn btn-red btn-lg">Create your account</a>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  /* Reveal each section as it scrolls into view.
+     IntersectionObserver just tells us "this element is now on screen". */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i % 4) * 0.09 + 's';
+    observer.observe(el);
+  });
+</script>
+{% endblock %}

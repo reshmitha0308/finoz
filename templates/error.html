@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Error {{ code }} — FinOz{% endblock %}
+
+{% block content %}
+<div class="error-wrap">
+  <div class="error-code">{{ code }}</div>
+  <h2>SOMETHING SNAPPED</h2>
+  <p style="color:var(--muted); max-width:520px; margin:1rem auto 2rem">{{ message }}</p>
+  <a href="{{ url_for('home') }}" class="btn btn-red btn-lg">Back to safety</a>
+</div>
+{% endblock %}

@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% block title %}Portfolio — FinOz{% endblock %}
+
+{% block content %}
+<div class="dash">
+
+  <h2 style="font-size:2.4rem">{{ user.username|upper }}'S PORTFOLIO</h2>
+
+  <div class="sync-bar">
+    <span class="sync-dot"></span>
+    <span>Live — repriced every 30 seconds, in step with the market charts</span>
+    <span style="flex:1"></span>
+    <span>IST <strong id="istClock">--:--:--</strong></span>
+    <span>&middot;</span>
+    <span id="pfStamp">loading…</span>
+  </div>
+
+  <!-- ============ headline numbers ============ -->
+  <div class="grid grid-4" style="margin:1.5rem 0 2.5rem">
+    <div class="card">
+      <div class="agent-source">Virtual cash</div>
+      <div id="pfCash" style="font-family:'Bebas Neue'; font-size:2.2rem">
+        Rs {{ '{:,.0f}'.format(user.cash) }}</div>
+    </div>
+    <div class="card">
+      <div class="agent-source">Holdings value</div>
+      <div id="pfValue" style="font-family:'Bebas Neue'; font-size:2.2rem">
+        Rs {{ '{:,.0f}'.format(total_value) }}</div>
+    </div>
+    <div class="card">
+      <div class="agent-source">Total profit / loss</div>
+      <div id="pfProfit" style="font-family:'Bebas Neue'; font-size:2.2rem"
+           class="{% if total_profit > 0 %}up{% elif total_profit < 0 %}down{% else %}flat{% endif %}">
+        Rs {{ '{:,.0f}'.format(total_profit) }}</div>
+    </div>
+    <div class="card">
+      <div class="agent-source">Net worth</div>
+      <div id="pfNet" style="font-family:'Bebas Neue'; font-size:2.2rem">
+        Rs {{ '{:,.0f}'.format(user.cash + total_value) }}</div>
+      <p style="font-size:.76rem">cash plus the value of everything you hold</p>
+    </div>
+  </div>
+
+  <!-- ============ AI scorecard ============ -->
+  <div class="card" style="margin-bottom:2.5rem">
+    <h3 style="font-size:1.5rem">AI SCORECARD</h3>
+    <p style="color:var(--muted); font-size:.9rem">
+      Every recommendation you responded to is scored against what the price actually
+      did afterwards. A BUY counts as correct if the price rose, an AVOID if it fell,
+      and a HOLD if the price moved less than 2% either way.
+    </p>
+    <div class="grid grid-4" style="margin-top:1rem">
+      <div><div class="agent-source">Recommendations</div>
+           <strong style="font-size:1.5rem">{{ scorecard.total }}</strong></div>
+      <div><div class="agent-source">You followed</div>
+           <strong style="font-size:1.5rem" class="up">{{ scorecard.followed }}</strong></div>
+      <div><div class="agent-source">You ignored</div>
+           <strong style="font-size:1.5rem" class="down">{{ scorecard.ignored }}</strong></div>
+      <div><div class="agent-source">Awaiting your call</div>
+           <strong style="font-size:1.5rem">{{ scorecard.total - scorecard.responded }}</strong></div>
+    </div>
+  </div>
+
+  <!-- ============ holdings ============ -->
+  <h3 style="font-size:1.6rem">CURRENT HOLDINGS</h3>
+  {% if holdings %}
+    <div class="table-wrap card" style="padding:1rem">
+      <table>
+        <thead>
+          <tr>
+            <th>Company</th><th>Shares</th><th>Avg buy price</th>
+            <th>Current price</th><th>Value</th><th>Profit / loss</th>
+          </tr>
+        </thead>
+        <tbody id="holdingsBody">
+          {% for h in holdings %}
+            <tr data-ticker="{{ h.ticker }}">
+              <td><strong>{{ h.name }}</strong><br>
+                  <span style="color:var(--muted); font-size:.78rem">{{ h.ticker }}</span></td>
+              <td data-qty>{{ h.quantity }}</td>
+              <td>Rs {{ '{:,.2f}'.format(h.average_price) }}</td>
+              <td data-current>Rs {{ '{:,.2f}'.format(h.current_price) }}</td>
+              <td data-value>Rs {{ '{:,.2f}'.format(h.value) }}</td>
+              <td data-profit
+                  class="{% if h.profit > 0 %}up{% elif h.profit < 0 %}down{% else %}flat{% endif %}">
+                Rs {{ '{:,.2f}'.format(h.profit) }} ({{ h.profit_pct }}%)
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="card"><p>You do not own any shares yet.
+      <a href="{{ url_for('dashboard') }}">Go to the market</a> to make your first trade.</p></div>
+  {% endif %}
+
+  <!-- ============ standing orders ============ -->
+  <h3 style="font-size:1.6rem; margin-top:2.5rem">AUTOMATIC BUY / SELL RULES</h3>
+  <div id="rulesList">
+    {% if rules %}
+      {% for r in rules %}
+        <div class="rule-card rule-{{ r.action }}">
+          <div>
+            <div class="rule-name">{{ r.label }} &middot; {{ r.ticker }}</div>
+            <div class="rule-detail">{{ r.note }} &middot; {{ r.quantity }} shares</div>
+          </div>
+          <div class="rule-progress"><span style="width:{{ r.progress }}%"></span></div>
+          <div class="rule-detail" style="min-width:190px">{{ r.explanation }}</div>
+          <button class="btn btn-ghost" style="padding:.3rem .8rem; font-size:.76rem"
+                  onclick="cancelRule({{ r.id }})">Cancel</button>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="card"><p>No active rules.
+        <a href="{{ url_for('dashboard') }}">Set one on the market page</a> to have
+        the app buy or sell for you when a target is reached.</p></div>
+    {% endif %}
+  </div>
+
+  {% if rule_history %}
+    <h3 style="font-size:1.2rem; margin-top:1.8rem; color:var(--muted)">RULE HISTORY</h3>
+    <div class="table-wrap card" style="padding:1rem">
+      <table>
+        <thead>
+          <tr><th>When</th><th>Stock</th><th>Rule</th><th>Target</th>
+              <th>Result</th><th>What happened</th></tr>
+        </thead>
+        <tbody>
+          {% for r in rule_history %}
+            <tr>
+              <td style="font-size:.8rem">{{ r.triggered_at or r.created_at }}</td>
+              <td>{{ r.ticker.replace('.NS','') }}</td>
+              <td>{{ r.rule_type.replace('_',' ')|title }}</td>
+              <td>{{ r.target_pct }}%</td>
+              <td>
+                {% if r.status == 'TRIGGERED' %}<span class="up">Executed</span>
+                {% elif r.status == 'FAILED' %}<span class="down">Failed</span>
+                {% else %}<span class="flat">Cancelled</span>{% endif %}
+              </td>
+              <td style="font-size:.8rem; color:var(--muted)">{{ r.note }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+
+  <!-- ============ AI history ============ -->
+  <h3 style="font-size:1.6rem; margin-top:2.5rem">AI RECOMMENDATION HISTORY</h3>
+  {% if recommendations %}
+    <div class="table-wrap card" style="padding:1rem">
+      <table>
+        <thead>
+          <tr><th>When</th><th>Stock</th><th>Verdict</th><th>Confidence</th>
+              <th>Consensus</th><th>Price then</th><th>Your call</th></tr>
+        </thead>
+        <tbody>
+          {% for r in recommendations %}
+            <tr>
+              <td style="font-size:.8rem">{{ r.created_at }}</td>
+              <td>{{ r.ticker.replace('.NS','') }}</td>
+              <td><strong class="verdict-{{ r.verdict }}">{{ r.verdict }}</strong></td>
+              <td>{{ (r.confidence * 100)|round|int }}%</td>
+              <td>{{ (r.consensus * 100)|round|int if r.consensus else 0 }}%</td>
+              <td>Rs {{ '{:,.2f}'.format(r.price_at_reco or 0) }}</td>
+              <td>
+                {% if r.user_action == 'FOLLOWED' %}<span class="up">Followed</span>
+                {% elif r.user_action == 'IGNORED' %}<span class="down">Ignored</span>
+                {% else %}<span class="flat">Pending</span>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="card"><p>No recommendations yet.
+      <a href="{{ url_for('dashboard') }}">Run the agents</a> on a stock to get your first one.</p></div>
+  {% endif %}
+
+  <!-- ============ transactions ============ -->
+  <h3 style="font-size:1.6rem; margin-top:2.5rem">TRANSACTION HISTORY</h3>
+  {% if transactions %}
+    <div class="table-wrap card" style="padding:1rem">
+      <table>
+        <thead>
+          <tr><th>When</th><th>Stock</th><th>Action</th><th>Quantity</th>
+              <th>Price</th><th>Total</th><th>Placed by</th></tr>
+        </thead>
+        <tbody>
+          {% for t in transactions %}
+            <tr>
+              <td style="font-size:.8rem">{{ t.created_at }}</td>
+              <td>{{ t.ticker.replace('.NS','') }}</td>
+              <td class="{% if t.action == 'BUY' %}up{% else %}down{% endif %}">{{ t.action }}</td>
+              <td>{{ t.quantity }}</td>
+              <td>Rs {{ '{:,.2f}'.format(t.price) }}</td>
+              <td>Rs {{ '{:,.2f}'.format(t.total) }}</td>
+              <td>
+                {% if t.source == 'AUTO' %}<span class="auto-tag">AUTO</span>
+                {% else %}<span class="flat" style="font-size:.78rem">You</span>{% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="card"><p>No trades yet.</p></div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/portfolio.js') }}"></script>
+{% endblock %}

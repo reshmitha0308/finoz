@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FinOz{% endblock %}</title>
+  <link rel="icon" type="image/png"
+        href="{{ url_for('static', filename='img/favicon.png') }}">
+  <link rel="apple-touch-icon"
+        href="{{ url_for('static', filename='img/finoz-icon.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+  <!-- The faint web pattern that sits behind everything -->
+  <div class="web-backdrop" aria-hidden="true"></div>
+
+  <nav class="topnav">
+    <a href="{{ url_for('home') }}" class="brand" aria-label="FinOz home">
+      <img src="{{ url_for('static', filename='img/finoz-logo-nav.png') }}"
+           alt="FinOz" class="brand-logo">
+    </a>
+
+    <div class="nav-links">
+      {% if user %}
+        <a href="{{ url_for('dashboard') }}">Market</a>
+        <a href="{{ url_for('portfolio_page') }}">Portfolio</a>
+        <span class="nav-user">{{ user.username }}</span>
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log out</a>
+      {% else %}
+        <a href="{{ url_for('login_page') }}" class="btn btn-ghost">Log in</a>
+        <a href="{{ url_for('signup_page') }}" class="btn btn-red">Sign up</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <p>FinOz &middot; Multi-Agent Financial Intelligence &middot; VIT Chennai 2026</p>
+    <p class="disclaimer">
+      Prototype for educational purposes. Analysis is generated from public and
+      synthetic data. This is not investment advice.
+    </p>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

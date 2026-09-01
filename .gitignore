@@ -1,0 +1,19 @@
+# Secrets - NEVER commit these
+.env
+*.env
+
+# Database files (contain user data)
+*.db
+hackverse2.db
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
