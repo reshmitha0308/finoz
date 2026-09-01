@@ -7,6 +7,7 @@ Three AI analysts research a stock **at the same time**, argue it out, and a
 fourth agent synthesises one recommendation tailored to *your* risk profile —
 showing its working at every step.
 
+Original Website: https://finozfinal.vercel.app/
 ---
 
 ## Quick start (3 commands)
