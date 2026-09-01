@@ -700,3 +700,54 @@ table td, table th { white-space: normal; overflow-wrap: anywhere; }
   .brand-logo { height: 26px; }
   .sense-ring { width: 340px; height: 340px; }
 }
+
+/* ---------------------------------------------- document page */
+
+.doc-wrap { max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+
+.doc-banner {
+  display: flex; gap: .8rem; flex-wrap: wrap; align-items: baseline;
+  border-left: 3px solid var(--red);
+  background: rgba(230,36,41,.08);
+  border-radius: 10px; padding: .9rem 1.1rem; margin-bottom: 2.2rem;
+  font-size: .86rem; color: var(--muted);
+}
+.doc-banner strong { color: var(--red); letter-spacing: 1px; }
+
+.doc { line-height: 1.75; }
+.doc h1 { font-size: 2.6rem; color: var(--text); margin-top: 0; }
+.doc h2 {
+  font-size: 1.9rem; margin-top: 2.6rem; color: var(--red);
+  border-bottom: 1px solid var(--line); padding-bottom: .4rem;
+}
+.doc h3 { font-size: 1.35rem; margin-top: 1.8rem; color: var(--blue-light); }
+.doc p, .doc li { color: var(--text); }
+.doc em { color: var(--muted); }
+.doc strong { color: #fff; }
+.doc ul, .doc ol { padding-left: 1.4rem; }
+.doc li { margin-bottom: .35rem; }
+.doc hr { border: none; border-top: 1px solid var(--line); margin: 2.4rem 0; }
+
+.doc code {
+  background: #0c0e18; border: 1px solid var(--line); border-radius: 5px;
+  padding: .1rem .35rem; font-size: .86em; color: var(--blue-light);
+}
+.doc pre {
+  background: #0c0e18; border: 1px solid var(--line); border-radius: 10px;
+  padding: 1rem; overflow-x: auto; font-size: .8rem; line-height: 1.45;
+}
+.doc pre code { background: none; border: none; padding: 0; color: var(--muted); }
+
+.doc table {
+  width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: .88rem;
+}
+.doc th {
+  text-align: left; color: var(--muted); text-transform: uppercase;
+  font-size: .72rem; letter-spacing: 1px;
+  border-bottom: 1px solid var(--line); padding: .6rem .5rem;
+}
+.doc td { border-bottom: 1px solid var(--line); padding: .6rem .5rem; }
+
+@media (max-width: 900px) {
+  .doc pre, .doc table { font-size: .76rem; }
+}

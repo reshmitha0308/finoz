@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Architecture &amp; Decision Logic — FinOz{% endblock %}
+
+{% block content %}
+<div class="doc-wrap">
+  <div class="doc-banner">
+    <strong>For judges</strong>
+    <span>This is the written summary of the agent architecture and decision
+      logic, served from <code>ARCHITECTURE.md</code> in the repository so the
+      page and the file can never disagree.</span>
+  </div>
+
+  <article class="doc">
+    {{ body|safe }}
+  </article>
+</div>
+{% endblock %}

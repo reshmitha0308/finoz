@@ -390,11 +390,18 @@ function renderSources(documents) {
 }
 
 function renderMetrics(metrics) {
+  const accuracy = metrics.signal_accuracy_30d;
   const cards = [
     ['Parallel agent latency', metrics.parallel_ms + ' ms', 'All three agents together'],
     ['If run one by one', metrics.sequential_ms + ' ms', 'What sequential would have cost'],
     ['Synthesis latency', metrics.synthesis_ms + ' ms', 'The fourth agent'],
-    ['Agent consensus', (metrics.consensus * 100).toFixed(0) + '%', 'How many agents agreed']
+    ['Agent consensus', (metrics.consensus * 100).toFixed(0) + '%', 'How many agents agreed'],
+    ['Portfolio concentration',
+     (metrics.portfolio_concentration * 100).toFixed(0) + '%',
+     'Share held in your single biggest position — higher is riskier'],
+    ['Signal accuracy (30-day)',
+     accuracy === null || accuracy === undefined ? 'n/a' : accuracy + '%',
+     'Momentum signal backtested against the next 30 days. 50% is a coin flip.']
   ];
   document.getElementById('metricArea').innerHTML = cards.map(([label, value, hint]) => `
     <div class="card">

@@ -198,6 +198,10 @@ def init_db():
     # rather than making you delete your database and start again.
     _ensure_column("transactions", "source", f"{text} DEFAULT 'MANUAL'")
 
+    # Metrics the problem statement asks to be logged per session.
+    _ensure_column("recommendations", "portfolio_concentration", "REAL")
+    _ensure_column("recommendations", "signal_accuracy_30d", "REAL")
+
 
 def _ensure_column(table, column, definition):
     """Add a column only if it is not already there. Safe to run repeatedly."""
@@ -324,14 +328,23 @@ def get_holdings(user_id):
 
 def save_recommendation(user_id, ticker, verdict, confidence, headline,
                         reasoning, agent_signals, citations, price,
-                        consensus, latency_ms):
+                        consensus, latency_ms, concentration=None,
+                        signal_accuracy=None):
+    """
+    One row per analysis run. This IS the performance log the problem
+    statement asks for: it carries agent latency, agent consensus, portfolio
+    risk concentration and signal accuracy against 30-day forward return,
+    alongside the reasoning and the citations behind the verdict.
+    """
     return run(
         "INSERT INTO recommendations (user_id, ticker, verdict, confidence, "
         "headline, reasoning, agent_signals, citations, price_at_reco, "
-        "user_action, consensus, latency_ms, created_at) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', ?, ?, ?)",
+        "user_action, consensus, latency_ms, portfolio_concentration, "
+        "signal_accuracy_30d, created_at) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', ?, ?, ?, ?, ?)",
         (user_id, ticker, verdict, confidence, headline, reasoning,
-         agent_signals, citations, price, consensus, latency_ms, _now()),
+         agent_signals, citations, price, consensus, latency_ms,
+         concentration, signal_accuracy, _now()),
     )
 
 

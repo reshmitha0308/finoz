@@ -26,6 +26,7 @@
     </a>
 
     <div class="nav-links">
+      <a href="{{ url_for('architecture') }}">Architecture</a>
       {% if user %}
         <a href="{{ url_for('dashboard') }}">Market</a>
         <a href="{{ url_for('portfolio_page') }}">Portfolio</a>
@@ -54,6 +55,7 @@
 
   <footer class="site-footer">
     <p>FinOz &middot; Multi-Agent Financial Intelligence &middot; VIT Chennai 2026</p>
+    <p><a href="{{ url_for('architecture') }}">Agent architecture &amp; decision logic</a></p>
     <p class="disclaimer">
       Prototype for educational purposes. Analysis is generated from public and
       synthetic data. This is not investment advice.

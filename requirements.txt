@@ -1,4 +1,5 @@
-flask
-yfinance
 anthropic
+flask
+markdown
 pymysql
+yfinance

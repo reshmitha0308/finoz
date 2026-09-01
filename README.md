@@ -18,13 +18,17 @@ python app.py
 
 Then open **http://localhost:5000**
 
+> **Judges:** the required written summary of the agent architecture and
+> decision logic is in [ARCHITECTURE.md](ARCHITECTURE.md), and is also served
+> live inside the app at **`/architecture`** (linked in the top navigation).
+
 To check everything works:
 
 ```bash
 python test_app.py
 ```
 
-You should see `109 passed, 0 failed`.
+You should see `129 passed, 0 failed`.
 
 ---
 
@@ -328,11 +332,13 @@ Gmail App Password in an environment variable — never in the code).
 | `auth.py` | Signup, confirmation codes, login, password hashing |
 | `agents.py` | Four agents, parallel executor, prompts |
 | `autotrade.py` | Trade execution plus automatic buy/sell rules |
+| `metrics.py` | 30-day forward-return backtest, portfolio concentration |
+| `ARCHITECTURE.md` | **Judge-facing summary of agents and decision logic** |
 | `market.py` | yfinance data, candlesticks, three signals |
 | `retrieval.py` | TF-IDF search over the filing corpus |
 | `database.py` | All SQL. SQLite/MySQL switch lives here |
 | `config.py` | Tickers, model, DB choice, paths |
-| `test_app.py` | 109 automated checks of the whole app |
+| `test_app.py` | 129 automated checks, including a PS-01 requirements audit |
 | `templates/` | The seven HTML pages |
 | `static/css/style.css` | The Spider-Man theme |
 | `static/js/dashboard.js` | Charts, 2-minute refresh, agents, trading |

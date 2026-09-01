@@ -30,6 +30,7 @@ import autotrade
 import config
 import database
 import market
+import metrics
 
 app = Flask(__name__)
 app.secret_key = config.SECRET_KEY
@@ -251,6 +252,31 @@ def ai_scorecard(user_id):
 def home():
     """The public homepage. Anyone can see this without logging in."""
     return render_template("home.html", user=current_user())
+
+
+@app.route("/architecture")
+def architecture():
+    """
+    The written summary of the agent architecture and decision logic, which
+    the problem statement asks for so judges can review it alongside the
+    demo. It is served from ARCHITECTURE.md so the page and the file in the
+    repository can never drift apart.
+    """
+    try:
+        import markdown
+
+        with open("ARCHITECTURE.md", "r", encoding="utf-8") as f:
+            body = markdown.markdown(
+                f.read(), extensions=["tables", "fenced_code", "toc"])
+
+        return render_template("architecture.html", user=current_user(),
+                               body=body)
+
+    except Exception as error:
+        traceback.print_exc()
+        return render_template("error.html", code=500,
+                               message=f"Could not render the architecture "
+                                       f"summary: {error}"), 500
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -481,6 +507,14 @@ def api_analyze():
         parallel_ms = max(a["latency_ms"] for a in agent_outputs)
         sequential_ms = sum(a["latency_ms"] for a in agent_outputs)
 
+        # The two remaining metrics the problem statement names by example.
+        holding_rows, _, _ = portfolio_rows(user)
+        concentration = metrics.portfolio_concentration(holding_rows)
+        try:
+            accuracy = metrics.signal_accuracy_30d()["accuracy_pct"]
+        except Exception:
+            accuracy = None
+
         reco_id = database.save_recommendation(
             user_id=user["id"],
             ticker=ticker,
@@ -493,6 +527,8 @@ def api_analyze():
             price=signals["latest_price"],
             consensus=consensus,
             latency_ms=parallel_ms + verdict.get("latency_ms", 0),
+            concentration=concentration,
+            signal_accuracy=accuracy,
         )
 
         return jsonify({
@@ -516,6 +552,8 @@ def api_analyze():
                 "sequential_ms": sequential_ms,
                 "synthesis_ms": verdict.get("latency_ms", 0),
                 "consensus": consensus,
+                "portfolio_concentration": concentration,
+                "signal_accuracy_30d": accuracy,
             },
         })
 

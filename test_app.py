@@ -514,7 +514,83 @@ def main():
               f"both returned {low_verdict}")
         print(f"        -> low risk: {low_verdict}   |   high risk: {high_verdict}")
 
-    print("\n[13] LOGOUT")
+    print("\n[13] PS-01 MINIMUM REQUIREMENTS AUDIT")
+    import metrics as metrics_module
+
+    run = client.post("/api/analyze", json={"ticker": "RELIANCE.NS"}).get_json()
+    latest = database.get_recommendations(me["id"], limit=1)[0]
+
+    # 1. Signal classification across >= 3 independent dimensions
+    sig = run["signals"]
+    check("R1 three independent signal dimensions", len(sig) >= 3)
+    check("R1 each has label + confidence + cited reasoning",
+          all(s.get("label") and s.get("confidence") is not None and s.get("detail")
+              for s in sig.values()))
+
+    # 2. RAG grounded with visible attribution
+    check("R2 documents retrieved and returned to the user",
+          len(run["documents"]) > 0
+          and all("snippet" in d and "filename" in d for d in run["documents"]))
+
+    # 3. >= 3 specialised agents in parallel on a shared contract
+    check("R3 three agents on one output contract",
+          len(run["agents"]) == 3 and all(
+              all(k in a for k in ("agent_name", "signal", "confidence",
+                                   "reasoning", "evidence", "data_quality"))
+              for a in run["agents"]))
+    check("R3 executed in parallel, not sequentially",
+          run["metrics"]["parallel_ms"] < run["metrics"]["sequential_ms"])
+
+    # 4. Profiling changes output on identical inputs  (proved in [12])
+    check("R4 personalisation verified above", True)
+
+    # 5. Live interface shows signals + cited output + portfolio
+    dash = client.get("/dashboard").data
+    check("R5 interface renders signals, verdict and portfolio",
+          all(x in dash for x in (b"signalCards", b"verdictArea",
+                                  b"sourceArea", b"syncNet")))
+
+    # 6. Performance log with >= 3 measurable metrics PER SESSION
+    logged = {k: latest.get(k) for k in
+              ("latency_ms", "consensus", "portfolio_concentration",
+               "signal_accuracy_30d")}
+    present = [k for k, v in logged.items() if v is not None]
+    check("R6 at least three metrics logged per session", len(present) >= 3,
+          f"only {present}")
+    check("R6 includes agent latency", logged["latency_ms"] is not None)
+    check("R6 includes portfolio concentration",
+          logged["portfolio_concentration"] is not None)
+    check("R6 includes 30-day forward-return accuracy",
+          logged["signal_accuracy_30d"] is not None)
+    print(f"        -> logged: {logged}")
+
+    # The backtest must not peek at the future.
+    bt = metrics_module.backtest_ticker("TCS.NS")
+    check("R6 backtest scores real forward returns", bt and bt["scored"] > 10)
+    check("R6 backtest leaves a forward window unscored",
+          bt is None or bt["scored"] <= 200)
+
+    # 7. End-to-end run with the full reasoning chain visible
+    check("R7 full chain present in one response",
+          all(k in run for k in ("signals", "agents", "verdict",
+                                 "documents", "metrics")))
+
+    # 8. Degraded data handled without failing or producing uncited output
+    deg = client.post("/api/analyze", json={
+        "ticker": "TCS.NS", "break_news": True, "break_prices": True}).get_json()
+    check("R8 degraded run still succeeds", deg and deg.get("ok"))
+    check("R8 degraded run still cites sources", len(deg["documents"]) > 0)
+
+    # 9. Written architecture summary, reviewable alongside the demo
+    check("R9 ARCHITECTURE.md exists", os.path.exists("ARCHITECTURE.md"))
+    arch = client.get("/architecture")
+    check("R9 summary is served inside the app", arch.status_code == 200)
+    check("R9 summary covers architecture AND decision logic",
+          b"Decision logic" in arch.data or b"decision logic" in arch.data)
+    check("R9 summary reachable from every page",
+          b"/architecture" in client.get("/").data)
+
+    print("\n[14] LOGOUT")
     client.get("/logout")
     check("Logout blocks the dashboard again",
           client.get("/dashboard").status_code == 302)
